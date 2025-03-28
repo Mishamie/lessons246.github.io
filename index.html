@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="image/x-icon" href="icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="Расписание уроков в школе 246">
+    <meta property="og:description" content="Расписание уроков и звонков в ГБОУ школе 246 на Планерной улице">
+    <meta property="og:image" content="">
+    <title>Расписание</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Расписание</h1>
+        <select id="classSelect">
+            <option hidden>Выберите класс</option>
+            <option value="class">       </option>
+            <option value="class9A">9А</option>
+            <option value="class9B">9Б</option>
+            <option value="class9V">9В</option>
+            <option value="class9G">9Г</option>
+            <option value="class9D">9Д</option>
+            <option value="class10A">10А</option>
+            <!-- Добавьте другие классы по мере необходимости -->
+        </select>
+
+        <div id="schedule" class="schedule">
+           
+        </div>
+    </div>
+
+
+    <div id="time">
+      <span>1 урок | 8:30 - 9:15</span>
+      <span>2 урок | 9:25 - 10:10</span>
+      <span>3 урок | 10:30 - 11:15</span>
+      <span>4 урок | 11:25 - 12:10</span>
+      <span>5 урок | 12:30 - 13:15</span>
+      <span>6 урок | 13:35 - 14:20</span>
+      <span>7 урок | 14:35 - 15:20</span>
+      <span>8 урок | 15:25 - 16:10</span>
+  </div>
+
+
+  
+
+    <script>
+        const schedules = {
+            class10A: {
+                Понедельник: ["Разговор о важном", "Литература", "Литература", "Обществознание", "Обществознание", "Английский язык", "Физическая культура"],
+                Вторник: ["Информатика", "Русский язык", "Геометрия", "История", "История", "Алгебра", "Алгебра"],
+                Среда: ["Вероятность и статистика", "Физика", "Физика", "Физическая культура", "Геометрия", "Геометрия", "Английский язык", "ЭУП"],
+                Четверг: ["Информатика", "Информатика", "Биология", "Английский язык", "Химия", "Литература", "Профминимум"],
+                Пятница: ["Информатика", "География", "Русский язык", "ОБЗР", "Алгебра", "Алгебра", "Индивидуальный проект"],
+            },
+            class9D: {
+                Понедельник: ["Разговор о важном", "Алгебра", "Физика", "Химия", "История", "Обществознание", "Русский язык"],
+                Вторник: ["Химия", "ОБЗР", "Русский язык", "Биология", "История", "Английский язык", "Литература"],
+                Среда: ["География", "Геометрия", "История", "Русский язык", "Английский язык", "Литература", "Физическая культура"],
+                Четверг: ["Биология", "Геометрия", "Литература", "Физика", "Вероятность и статистика", "Информатика", "Профминимум"],
+                Пятница: ["География", "Физика", "Физическая культура", "Труд", "Английский язык", "Алгебра", "Алгебра"],
+             
+            },
+            class9G: {
+                Понедельник: ["Разговор о важном", "Русский язык", "Физическая культура", "Геометрия", "ОБЗР", "Химия", "Литература"],
+                Вторник: ["Труд", "Алгебра", "Биология", "История", "Английский язык", "Вероятность и статистика", "Физика"],
+                Среда: ["Русский язык", "Алгебра", "Алгебра", "Литература", "Физика", "Физическая культура", "История"],
+                Четверг: ["Литература", "Биология", "Английский язык", "Информатика", "Геометрия", "География", "Профминимум"],
+                Пятница: ["Русский язык", "История", "Обществознание", "Физика", "География", "Химия", "Английский язык"],
+                
+            },
+            class9V: {
+                Понедельник: ["Разговор о важном", "Английский язык", "Геометрия", "Русский язык", "Литература", "Вероятность и статистика", "Физика"],
+                Вторник: ["Геометрия", "Алгебра", "Химия", "Литература", "Физическая культура", "ОБЗР", "История"],
+                Среда: ["Химия", "История", "Информатика", "Биология", "География", "Физика", "Физическая культура"],
+                Четверг: ["Алгебра", "Алгебра", "Русский язык", "История", "Труд", "Английский язык", "Профминимум"],
+                Пятница: ["Русский язык", "Английский язык", "Биология", "Литература", "Физика", "География", "Обществознание"],
+                
+            },
+        };
+
+        const classSelect = document.getElementById('classSelect');
+        const scheduleDiv = document.getElementById('schedule');
+
+        function updateSchedule() {
+            const selectedClass = classSelect.value;
+            const schedule = schedules[selectedClass];
+            scheduleDiv.innerHTML = ''; // Очищаем текущее расписание
+
+            for (const day in schedule) {
+                const daySchedule = document.createElement('div');
+                daySchedule.className = 'day-schedule';
+                daySchedule.innerHTML = `<h3>${day}</h3>`;
+                
+                const lessonsList = document.createElement('div');
+                lessonsList.className = 'lessons-list';
+                
+                schedule[day].forEach(lesson => {
+                    const lessonItem = document.createElement('div');
+                    lessonItem.className = 'lesson-item';
+                    lessonItem.textContent = lesson;
+                    lessonsList.appendChild(lessonItem);
+                });
+
+                daySchedule.appendChild(lessonsList);
+                scheduleDiv.appendChild(daySchedule);
+            }
+        }
+
+        classSelect.addEventListener('change', updateSchedule);
+        updateSchedule(); // Инициализируем расписание для первого класса
+    </script>
+</body>
+</html>
+
+
